@@ -141,7 +141,7 @@ def edit_unit(request, location):
     for category in COMPONENT_TYPES:
         component_class = XModuleDescriptor.load_class(category)
         # add the default template
-        has_markdown = hasattr(component_class, 'markdown') and component_class.markdown is not None
+        has_markdown = getattr(component_class, 'markdown', None) is not None
         component_templates[category].append((
             component_class.display_name.default or 'Blank',
             category,
@@ -174,7 +174,7 @@ def edit_unit(request, location):
                     component_templates['advanced'].append((
                         component_class.display_name.default or category,
                         category,
-                        hasattr(component_class, 'markdown') and component_class.markdown is not None,
+                        False,
                         None  # don't override default data
                         ))
                 except PluginMissingError:

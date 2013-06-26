@@ -9,6 +9,7 @@ from xblock.core import Integer, Scope, String, List, Float, Boolean
 from xmodule.open_ended_grading_classes.combined_open_ended_modulev1 import CombinedOpenEndedV1Module, CombinedOpenEndedV1Descriptor
 from collections import namedtuple
 from .fields import Date
+import textwrap
 
 log = logging.getLogger("mitx.courseware")
 
@@ -27,7 +28,7 @@ VERSION_TUPLES = {
 }
 
 DEFAULT_VERSION = 1
-DEFAULT_DATA = """
+DEFAULT_DATA = textwrap.dedent("""\
     <combinedopenended>
         <rubric>
             <rubric>
@@ -58,7 +59,7 @@ DEFAULT_DATA = """
             </openended>
         </task>
     </combinedopenended>
-"""
+""")
 
 
 class VersionInteger(Integer):
@@ -83,7 +84,8 @@ class CombinedOpenEndedFields(object):
     display_name = String(
         display_name="Display Name",
         help="This name appears in the horizontal navigation at the top of the page.",
-        default="Open Ended Grading", scope=Scope.settings
+        default="Open Ended Grading",
+        scope=Scope.settings
     )
     current_task_number = Integer(help="Current task that the student is on.", default=0, scope=Scope.user_state)
     task_states = List(help="List of state dictionaries of each task within this module.", scope=Scope.user_state)
