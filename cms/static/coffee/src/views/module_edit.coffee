@@ -2,8 +2,6 @@ class CMS.Views.ModuleEdit extends Backbone.View
   tagName: 'li'
   className: 'component'
   editorMode: 'editor-mode'
-  settingsMode: 'settings-mode'
-  subtitlesMode: 'subtitles-mode'
 
   events:
     "click .component-editor .cancel-button": 'clickCancelButton'
@@ -115,31 +113,29 @@ class CMS.Views.ModuleEdit extends Backbone.View
     event.preventDefault()
     if not @hasDataEditor()
       return
-    @selectMode(event.currentTarget.parentElement.id, event.currentTarget)
+    @selectMode(event.currentTarget.parentElement.id)
 
   hasDataEditor: =>
     return @$el.find('.wrapper-comp-editor').length > 0
 
-  selectMode: (mode, currentTarget) =>
-    editors = @$el.find('.component-edit-modes').find('.component-edit-tab')
-    buttons =  @$el.find('.nav-edit-modes .mode').find("a")
+  selectMode: (mode) =>
+    dataEditor = @$el.find('.wrapper-comp-editor')
+    settingsEditor = @$el.find('.wrapper-comp-settings')
+    editorModeButton =  @$el.find('#editor-mode').find("a")
+    settingsModeButton = @$el.find('#settings-mode').find("a")
 
-    if mode is 'editor-mode'
-      el = buttons.parent().filter('#editor-mode').find('a')
-    else if currentTarget
-      el = $(currentTarget)
+    if mode == @editorMode
+      # Because of CodeMirror editor, cannot hide the data editor when it is first loaded. Therefore
+      # we have to use a class of is-inactive instead of is-active.
+      dataEditor.removeClass('is-inactive')
+      editorModeButton.addClass('is-set')
+      settingsEditor.removeClass('is-active')
+      settingsModeButton.removeClass('is-set')
     else
-      el = buttons.first()
-
-    id = el.attr('href')
-
-    buttons.removeClass('is-set')
-    el.addClass('is-set')
-
-    editors
-      .addClass('is-inactive')
-      .filter(id)
-      .removeClass('is-inactive')
+      dataEditor.addClass('is-inactive')
+      editorModeButton.removeClass('is-set')
+      settingsEditor.addClass('is-active')
+      settingsModeButton.addClass('is-set')
 
   hideDataEditor: =>
     editorModeButtonParent =  @$el.find('#editor-mode')

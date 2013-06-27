@@ -536,10 +536,10 @@ body.course.unit {
 
 // Settings Wrapper
 .wrapper-comp-settings {
-  display: block;
+  display: none;
 
-  &.is-inactive {
-    display: none;
+  &.is-active {
+    display: block;
   }
 
   //settings-list
@@ -719,23 +719,6 @@ body.course.unit {
       }
     }
   }
-}
-// Wrapper for module specific tabs
-.component-edit-tab {
-  display: block;
-
-  &.is-inactive {
-    display: none;
-  }
-
-  .field{
-    background: white;
-    padding: 20px;
-  }
-
-  .blue-button{
-      @include blue-button;
-    }
 }
 // ====================
 
@@ -983,24 +966,34 @@ div.wrapper-comp-editor.is-inactive ~ div.launch-latex-compiler{
  display: none;
 }
 
-.comp-subtitles-entry{
-  text-align: center;
-  .file-upload{
-    display: none;
-  }
-  .comp-subtitles-import-list{
-    > li{
-      display: block;
-      margin: $baseline/2 0px $baseline/2 0;
-    }
+#circle-preloader{
+  display: block;
+  width:70px;
+  padding: 20px 0;
+  margin: 0 auto;
+}
 
-    .blue-button{
-      display: block;
-      width: 70%;
-      margin: 0 auto;
-      text-align: center;
-    }
-  }
+.circle-preloader{
+  display: block;
+  background-color:#EDBD45;
+  float:left;
+  height:15px;
+  margin-left:8px;
+  width:15px;
+  @include anim-opacityHider(1.8s, linear, infinite);
+  border-radius:10px;
+}
+
+#circle-preloader_1{
+  @include animation-delay(0.4s);
+}
+
+#circle-preloader_2{
+  @include animation-delay(0.7s);
+}
+
+#circle-preloader_3{
+  @include animation-delay(1.0s);
 }
 
 .prompt{
@@ -1033,34 +1026,4 @@ div.wrapper-comp-editor.is-inactive ~ div.launch-latex-compiler{
       }
     }
   }
-}
-
-#circle-preloader{
-  display: block;
-  width:70px;
-  padding: 20px 0;
-  margin: 0 auto;
-}
-
-.circle-preloader{
-  display: block;
-  background-color:#EDBD45;
-  float:left;
-  height:15px;
-  margin-left:8px;
-  width:15px;
-  @include anim-opacityHider(1.8s, linear, infinite);
-  border-radius:10px;
-}
-
-#circle-preloader_1{
-  @include animation-delay(0.4s);
-}
-
-#circle-preloader_2{
-  @include animation-delay(0.7s);
-}
-
-#circle-preloader_3{
-  @include animation-delay(1.0s);
 }

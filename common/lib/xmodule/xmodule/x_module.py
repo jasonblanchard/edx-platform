@@ -335,8 +335,6 @@ class XModuleDescriptor(XModuleFields, HTMLSnippet, ResourceTemplates, XBlock):
     entry_point = "xmodule.v1"
     module_class = XModule
 
-    tabs = {}
-
     # Attributes for inspection of the descriptor
 
     # This indicates whether the xmodule is a problem-type.

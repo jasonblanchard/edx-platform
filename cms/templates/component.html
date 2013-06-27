@@ -7,38 +7,28 @@
 <link rel="stylesheet" type="text/css" href="${static.url('css/vendor/html5-input-polyfills/number-polyfill.css')}" />
 
 <div class="wrapper wrapper-component-editor">
-  <div class="component-editor">
-    <div class="component-edit-header">
-        <span class="component-name"></span>
-          <ul class="nav-edit-modes">
-            <li id="editor-mode" class="mode active-mode" aria-controls="editor-tab" role="tab">
-              <a href="#editor-tab">${_("Editor")}</a>
-            </li>
-            <li id="settings-mode" class="mode active-mode" aria-controls="settings-tab" role="tab">
-                <a href="#settings-tab">${_("Settings")}</a>
-            </li>
-        % for tab_name, tab_content in module_custom_html_tabs.items():
-            <li id="tab-${loop.index}-mode" class="mode active-mode" aria-controls="${tab_name.lower() | entity}-tab" role="tab">
-                <a href="#tab-${loop.index}">${tab_name}</a>
-            </li>
-        % endfor
-        </ul>
-    </div> <!-- Editor Header -->
+	<div class="component-editor">
+		<div class="component-edit-header">
+  			<span class="component-name"></span>
+  	  		<ul class="nav-edit-modes">
+  	  			<li id="editor-mode" class="mode active-mode" aria-controls="editor-tab" role="tab">
+  	  				<a href="#">${_("Editor")}</a>
+	  			</li>
+	  			<li id="settings-mode" class="mode active-mode" aria-controls="settings-tab" role="tab">
+	  				<a href="#">${_("Settings")}</a>
+	  			</li>
+	  		</ul>
+		</div> <!-- Editor Header -->
 
-    <div class="component-edit-modes">
-          <div class="module-editor">
-              ${editor}
-          % for tab_name, tab_content in module_custom_html_tabs.items():
-              <div class="wrapper-comp-${tab_name.lower() | entity} component-edit-tab" id="tab-${loop.index}">
-                  <%include file="${tab_content}"/>
-              </div>
-          % endfor
-          </div>
-    </div>
-    <div class="row module-actions">
-        <a href="#" class="save-button">${_("Save")}</a>
-        <a href="#" class="cancel-button">${_("Cancel")}</a>
-    </div> <!-- Module Actions-->
+		<div class="component-edit-modes">
+	        <div class="module-editor">
+	            ${editor}
+	        </div>
+		</div>
+		<div class="row module-actions">
+	  		<a href="#" class="save-button">${_("Save")}</a>
+	  		<a href="#" class="cancel-button">${_("Cancel")}</a>
+		</div> <!-- Module Actions-->
   </div>
 </div>
 
@@ -48,4 +38,3 @@
 </div>
 <a data-tooltip='${_("Drag to reorder")}' href="#" class="drag-handle"></a>
 ${preview}
-

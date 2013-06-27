@@ -1,9 +1,0 @@
-<div class="message-warn">
-    <p>If subtitles for the video already exist, importing again will overwrite them.</p>
-    <p>Are you sure that you want to import the subtitle file
-    found on YouTube?</p>
-    <div class="row message-actions">
-        <a href="#" class="import-true-button">${_("Yes")}</a>
-        <a href="#" class="import-false-button">${_("No")}</a>
-    </div>
-</div>
