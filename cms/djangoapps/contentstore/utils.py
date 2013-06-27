@@ -450,3 +450,11 @@ def generate_subs_from_source(youtube_subs, subs_type, subs_filedata, item):
             item)
 
     return True
+
+
+def generate_str_from_sjson(sjson_subs, speed, item):
+    """Generate and store subtitles from sjson to SubRip (*.srt)."""
+    aaa = generate_subs(speed, 1, sjson_subs)
+    # TODO: generate SRT from aaa
+    # TODO: save SRT and get link
+    return True

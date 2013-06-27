@@ -14,10 +14,14 @@ from xmodule.modulestore import Location
 from xmodule.modulestore.django import modulestore
 from xmodule.modulestore.inheritance import own_metadata
 from xmodule.modulestore.exceptions import ItemNotFoundError, InvalidLocationError
+from xmodule.contentstore.django import contentstore
+from xmodule.contentstore.content import StaticContent
+from xmodule.exceptions import NotFoundError
 
 from util.json_request import expect_json
 from ..utils import (get_modulestore, download_youtube_subs,
-                     return_ajax_status, generate_subs_from_source)
+                     return_ajax_status, generate_subs_from_source,
+                     generate_str_from_sjson)
 from .access import has_access
 from .requests import _xmodule_recurse
 
@@ -229,6 +233,69 @@ def upload_subtitles(request):
         return False
 
     return status
+
+
+@login_required
+@expect_json
+@return_ajax_status
+def download_subtitles(request):
+    """Try to download subtitles for current modules."""
+
+    # This view return True/False, cause we use `return_ajax_status`
+    # view decorator.
+
+    item_location = request.POST.get('id')
+    if not item_location:
+        log.error('POST data without "id" property.')
+        return False
+
+    try:
+        item = modulestore().get_item(item_location)
+    except (ItemNotFoundError, InvalidLocationError):
+        log.error("Can't find item by location.")
+        return False
+
+    # Check permissions for this user within this course.
+    if not has_access(request.user, item_location):
+        raise PermissionDenied()
+
+    if item.category != 'videoalpha':
+        log.error('Subtitles are supported only for videoalpha" modules.')
+        return False
+
+    try:
+        xmltree = etree.fromstring(item.data)
+    except etree.XMLSyntaxError:
+        log.error("Can't parse source XML.")
+        return False
+
+    youtube_attr = xmltree.get('youtube')
+    sub_attr = xmltree.get('sub')
+
+
+    sjson_subtitles = ''
+    speed = 1
+    if youtube_attr:
+        filename = 'subs_{0}.srt.sjson'.format('to_do')
+        content_location = StaticContent.compute_location(
+            'MITx', '999', filename)
+        try:
+            content = contentstore().find(content_location)
+            contentstore().delete(content.get_id())
+            content_url = content.get_url_path()
+        except NotFoundError:
+            log.error("Can't find content.")
+            return False
+
+        return True, {'url': content_url}
+    elif sub_attr:
+        pass
+    else:
+        log.error('Missing or blank "youtube" attribute and "source" tag.')
+        return False
+
+    generate_str_from_sjson(sjson_subtitles, speed, item)
+    return True
 
 
 @login_required
